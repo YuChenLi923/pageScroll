@@ -190,8 +190,8 @@ var speedPattern={
 		return  Bezier.solve(curTime/duration,UnitBezier.prototype.epsilon)*(endValue-startValue)+startValue;
 	}
 }
-function animate(dom){
-	this.dom=dom;
+function animate(){
+	this.dom=null;
 	this.startTime=0;
 	this.startValue=[];
 	this.endValue=[];
@@ -200,6 +200,9 @@ function animate(dom){
 	this.easing=null;
 	this.duration=null;
 	this.func=null;
+}
+animate.prototype.init=function(dom){
+	this.dom=dom;
 }
 animate.prototype.start=function(rules,duration,easing){
 	this.startTime=+new Date;
@@ -249,7 +252,7 @@ animate.prototype.start=function(rules,duration,easing){
 animate.prototype.update=function(cur,propertyName,unit){
 	this.dom.style[propertyName]=cur+unit;
 }
-animate.prototype.callback=function(func){
-	this.func=func;
+animate.prototype.callback=function(){
+	this.func=Array.prototype.shift.apply(arguments);
 };
 

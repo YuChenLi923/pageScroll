@@ -18,6 +18,15 @@ body{
 .hidden{
 	display:none;
 }
+.font{
+	display:block;
+	float:left;
+}
+
+.font_warp{
+	overflow:hidden;
+	display:block;
+}
 .page{
 	width:100%;
 	height:100%;
@@ -49,10 +58,12 @@ body{
 #page1{
 	background-color:#041316;
 	color:white;
+	font-size:35px;
 }
 #page2{
 	background-color:#2150C9;
 	color:white;
+	font-size:35px;
 }
 #page3{
 	background-color:#041316;
@@ -68,7 +79,7 @@ body{
 	position:fixed;
 	right:30px;
 	top:50%;
-	margin-top:-75px;
+	margin-top:-160px;
 	float:top;
 	z-index:3;
 }
@@ -77,9 +88,9 @@ body{
 
 #nav li{
 	float:top;
-	margin-top:20px;
-	height:10px;
-	width:10px;
+	margin-top:40px;
+	height:24px;
+	width:24px;
 	border-radius:50%;
 	background-color:grey;
 }
@@ -88,10 +99,20 @@ body{
 }
 #nav .cur{
 	background-color:#FA6C1A;
-	height:6px;
-	width:6px;
+	height:20px;
+	width:20px;
 	border:2px solid grey;
 	border-radius:50%;
+}
+
+#page1 #title{
+	width:220px;
+}
+#page2 #title{
+	width:220px;
+}
+#page2 #content{
+	width:128px;
 }
 
 

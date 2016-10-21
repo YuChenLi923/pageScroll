@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv='content-type' content='text/html;charset:UTF-8'/>
+		<meta http-equiv='content-type' content='text/html;charset:UTF-8'>
 		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0;" name="viewport" />
 		<title>纯JS页面滚动</title>
 		<link type='text/css' rel='stylesheet' href='css/pageScroll.css'>
@@ -11,24 +11,20 @@
 			<div id='pages'>
 					<div id='page1' class='page' >
 						<!-- 展示的主题 -->
-						<h2 >DEMO展示
-						</h2>
-						<p  >
-							<span>关键字</span>
-							<span>关键字</span>
-							<span>关键字</span>
-						</p>
+						<a id='title' class='font_warp' font-pattern=2 font-direction='vertical'><h2  class='font'>DEMO展示
+						</h2></a>
+					
 					</div>
 					<div id='page2' style='' class='page'>
 						<!-- 展示的内容分类 -->
-							<h3 >大致内容</h3>
-							<ul >
+							<a class='font_warp' font-pattern=1 font-direction='horizontal'><h3 class='font'>大致内容</h3></a>
+							<a class='font_warp' font-pattern=1 font-direction='vertical' id='content'><ul class='font'>
 								<li>XXXXXXX</li>
 								<li>XXXXXXX</li>
 								<li>XXXXXXX</li>
 								<li>XXXXXXX</li>
 								<li>XXXXXXX</li>
-							</ul>
+							</ul></a>
 					</div>
 					<div id='page3' style='' class='page'>
 					</div>
@@ -37,13 +33,6 @@
 					<div id='page5' style='' class='page'>
 					</div>
 			</div>
-		<!-- 	<ul id='nav'>
-				<li data-index='1' class='cur'></li>
-				<li data-index='2'></li>
-				<li data-index='3'></li>
-				<li data-index='4'></li>
-				<li data-index='5'></li>
-			</ul> -->
 		</div>
 		
 		<script type='text/javaScript' src='js/commonFunction.js'></script>

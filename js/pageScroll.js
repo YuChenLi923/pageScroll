@@ -19,7 +19,9 @@
 		width=getPageSizeInf().docWidth,
 		speed=height/(100*time),
 		page=getElement(pages,'.page',false),
-		cssText=twoDimArray(num);
+		fontDir={'horizontal':'width','vertical':'height'},
+		cssText=twoDimArray(num),
+		pageAnimate=new animate();
 	//页面初始化
 	function init(start){
 		curNav(num,start);
@@ -92,8 +94,16 @@
 		var nextPClass=handleStyleTable(nextP);
 		var curPClass=handleStyleTable(curP);
 		nextPClass.add('slide');
-		var nextPAnimate=new animate(nextP);
-		nextPAnimate.callback(function(){
+		pageAnimate.init(nextP);
+		var elems=nextP.getElementsByTagName('*');
+		for(var i=0,len=elems.length;i<len;i++){
+			var pattern=elems[i].getAttribute('font-pattern');
+			if(pattern){
+				elems[i].style.cssText='display:none';
+			}
+		}
+		pageAnimate.callback(function(){
+			fontAnimation(nextP);
 			nextPClass.remove('slide');
 			nextPClass.add('cur');
 			curPClass.remove('cur');
@@ -101,13 +111,53 @@
 			curNav(num,index);
 			nextPClass=curPClass=null;
 		});	
-		nextPAnimate.start([
+		pageAnimate.start([
 			'opacity:1',
 			'top:0px',
 			'left:0px'
 		],time,'linear');
 	}  
-
+	//字体动画效果
+	function fontAnimation(page){
+		var elems=page.getElementsByTagName('*');
+		for(var i=0,len=elems.length;i<len;i++){
+			var pattern=elems[i].getAttribute('font-pattern'),
+				fontClass=handleStyleTable(elems[i]);
+			if(pattern){
+				elems[i].style.cssText='display:block';
+				var fontAnimate=new animate(),
+					fontDirection=fontDir[elems[i].getAttribute('font-direction')],
+					font=elems[i].children[0],
+					fontWidth=font.offsetWidth+5,
+					fontHeight=font.offsetHeight,
+					patternString,
+					dis;
+				font.style.width=fontWidth+'px';
+				fontAnimate.init(elems[i]);
+				fontAnimate.callback(function(){	
+					fontAnimate=null;
+				});
+				dis=fontDirection=='width'?fontWidth:fontHeight;
+				patternString=fontPattern[parseInt(pattern)-1](fontDirection,dis);
+				fontAnimate.start(patternString,800,'linear');
+			}
+		}
+	}
+	//字体模式
+	var fontPattern=[
+		//1-普通模式
+		function(){
+			return [arguments[0]+':'+arguments[1]+'px'];
+		},
+		//2-淡入淡出模式
+		function(){
+			return [
+				arguments[0]+':'+arguments[1]+'px',
+				'opacity:1'
+			]
+		},
+		//3-滑动模式
+	];
 	//设置当前页对应的导航按钮样式
 	function curNav(num,index){
 		var li=ul.getElementsByTagName('li');
