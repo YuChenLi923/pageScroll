@@ -200,6 +200,7 @@ function animate(){
 	this.easing=null;
 	this.duration=null;
 	this.func=null;
+	this.args=null;
 }
 animate.prototype.init=function(dom){
 	this.dom=dom;
@@ -230,7 +231,7 @@ animate.prototype.start=function(rules,duration,easing){
 				self.dom.style[self.propertyName[i]]=self.endValue[i]+self.unit[i];
 			}
 			if(self.func){
-				self.func();
+				self.func(self.args);
 			}
 			return false;
 		}
@@ -254,5 +255,6 @@ animate.prototype.update=function(cur,propertyName,unit){
 }
 animate.prototype.callback=function(){
 	this.func=Array.prototype.shift.apply(arguments);
+	this.args=arguments;
 };
 

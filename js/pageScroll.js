@@ -24,10 +24,12 @@
 		pageAnimate=new animate();
 	//页面初始化
 	function init(start){
+		var cur=page[start-1],
+			curPClass=handleStyleTable(cur);
 		curNav(num,start);
-		var curPClass=handleStyleTable(page[start-1]);
 		curPClass.add('cur');
 		curPClass=null;
+		fontAnimation(cur);
 	}
 	//处理页面滚动的起始位置
 	function scroll(flag){
@@ -134,7 +136,8 @@
 					dis;
 				font.style.width=fontWidth+'px';
 				fontAnimate.init(elems[i]);
-				fontAnimate.callback(function(){	
+				fontAnimate.callback(function(width){
+					this.dom.width=	width+'px';
 					fontAnimate=null;
 				});
 				dis=fontDirection=='width'?fontWidth:fontHeight;
