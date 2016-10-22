@@ -7,7 +7,7 @@
 
 ### html结构代码示例：
 
----
+``` html
 <div id='warp'>
 	<div id='pages'>
 		<div id='page1' class='page' ></div>
@@ -15,9 +15,11 @@
 		<div id='page3' class='page'></div>
 	</div>
 </div>
----
+
+```
 
 ### pageScroll.js接口的参数说明：
+
 - id 字符串,页面外层包裹,如果是示例则为'warp'
 - num 数字,页面的数量
 - direction 数组,页面跳转动画的方向，示例['left'],目前可添加的参数:left-水平方向,top-垂直方向,也可以组合使用，如：['left','top']
@@ -31,13 +33,13 @@
 
 添加字体效果的示例
 
---- 
+``` html
 
 <a id='title' class='font_warp' font-pattern=2 font-direction='vertical'>
 	 <h2  class='font'>DEMO展示</h2>
 </a>
 
---- 
+```
 
 您只需要向上面这样，为某个包裹文本的标签添加 font 样式，并将它包裹在 a 标签中(当然其他类似的也行)然后为这个标签添加样式:font_warp，并设置属性font-pattern和font-direction。
 
