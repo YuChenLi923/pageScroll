@@ -23,7 +23,7 @@ body{
 	float:left;
 }
 
-.font_warp{
+.font_slide{
 	overflow:hidden;
 	display:block;
 }
@@ -105,16 +105,27 @@ body{
 	border-radius:50%;
 }
 
+/***** page1 *****/
 #page1 #title{
-	width:220px;
-}
-#page2 #title{
-	width:220px;
-}
-#page2 #content{
-	width:128px;
+	margin:auto;
+	margin-top:100px;
 }
 
+/***** page2 *****/
+#page2 #title{
+	margin:auto;
+	margin-top:100px;
+	font-size:45px;
+	position:relative;
+}
+#page2 #content{
+	margin:auto;
+	margin-top:20px;
+}
+#page2 #content li{
+	margin-top:35px;
+}
 
 /* 字体动画效果-----------------------------------------------------------------
 ----------------------------------------------------------------------------*/
+

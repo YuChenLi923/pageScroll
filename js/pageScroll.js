@@ -97,15 +97,8 @@
 		var curPClass=handleStyleTable(curP);
 		nextPClass.add('slide');
 		pageAnimate.init(nextP);
-		var elems=nextP.getElementsByTagName('*');
-		for(var i=0,len=elems.length;i<len;i++){
-			var pattern=elems[i].getAttribute('font-pattern');
-			if(pattern){
-				elems[i].style.cssText='display:none';
-			}
-		}
+		fontAnimation(nextP);
 		pageAnimate.callback(function(){
-			fontAnimation(nextP);
 			nextPClass.remove('slide');
 			nextPClass.add('cur');
 			curPClass.remove('cur');
@@ -121,30 +114,75 @@
 	}  
 	//字体动画效果
 	function fontAnimation(page){
-		var elems=page.getElementsByTagName('*');
+		var elems=page.getElementsByTagName('*'),
+			stack=[],
+			timer,
+			args,
+			Time=time;
 		for(var i=0,len=elems.length;i<len;i++){
 			var pattern=elems[i].getAttribute('font-pattern'),
 				fontClass=handleStyleTable(elems[i]);
 			if(pattern){
-				elems[i].style.cssText='display:block';
-				var fontAnimate=new animate(),
-					fontDirection=fontDir[elems[i].getAttribute('font-direction')],
-					font=elems[i].children[0],
-					fontWidth=font.offsetWidth+5,
-					fontHeight=font.offsetHeight,
-					patternString,
-					dis;
-				font.style.width=fontWidth+'px';
-				fontAnimate.init(elems[i]);
-				fontAnimate.callback(function(width){
-					this.dom.width=	width+'px';
-					fontAnimate=null;
-				});
-				dis=fontDirection=='width'?fontWidth:fontHeight;
-				patternString=fontPattern[parseInt(pattern)-1](fontDirection,dis);
-				fontAnimate.start(patternString,800,'linear');
+				var curElem=elems[i];
+				var fontAnimateObj={
+					fontDirection:fontDir[curElem.getAttribute('font-direction')],
+					font:curElem.children[0],
+					fontwidth:curElem.children[0].offsetWidth+5,
+					fontheight:curElem.children[0].offsetHeight,
+					animate:new animate(),
+					pri:curElem.getAttribute('pri')
+				};
+				fontAnimateObj.font.parentNode.parentNode.style.width=fontAnimateObj.fontwidth+'px';
+					fontAnimateObj.font.style.width=fontAnimateObj.fontwidth+'px';
+				fontAnimateObj.dis=fontAnimateObj.fontDirection=='width'?fontAnimateObj.fontwidth:fontAnimateObj.fontheight;
+				fontAnimateObj.patternString=fontPattern[parseInt(pattern)-1](fontAnimateObj.fontDirection,fontAnimateObj.dis);
+				curElem.style[fontAnimateObj.fontDirection]=0;
+				fontAnimateObj.animate.init(curElem);	
+				fontAnimateObj.animate.callback(function(args){
+					this.dom.style.cssText='display:block';
+					this.dom.style.width=args[0]+'px';
+				},fontAnimateObj.fontwidth);
+				stack.push(fontAnimateObj);
 			}
 		}
+		stack.sort(function(){
+			if(arguments[0].pri>arguments[1].pri){
+				return -1;
+			}
+			if(arguments[0].pri==arguments[1].pri){
+				return 0;
+			}
+			else{
+				return 1;
+			}
+		});
+		setTimeout(function(){
+			timer=setInterval(function(){
+				var args=[],
+					Time=10;
+				while(1){
+					if(args.length>0){
+						if(stack.length>0&&args[args.length-1].pri===stack[0].pri){
+							args.push(stack.shift());
+						}
+						else if(stack.length>0){
+							break;
+						}
+						else if(stack.length===0){
+							clearInterval(timer);
+							break;
+						}
+					}
+					else{
+						args.push(stack.shift());
+					}
+				}
+				for(var i=0,len=args.length;i<len;i++){
+					args[i].animate.start(args[i].patternString,800,'linear');
+				}
+				args.length=0;
+			},800);
+		},time-800>0?time-800:0);
 	}
 	//字体模式
 	var fontPattern=[
@@ -249,7 +287,7 @@
 		style:'normal',//页面跳转的风格 
 		nav:true,//是否开启导航栏
 		loop:true,//是否开启循环页面
-		start:1,//初始页面的位置
+		start:2,//初始页面的位置
 		control:['mousewheel','keyboard']//'mousewheel-鼠标滚轮,keyboard-键盘方向键
 	}
 );

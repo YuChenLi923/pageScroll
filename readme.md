@@ -1,4 +1,4 @@
-这个一个用纯JS编写的页面滚动的小demo，当前版本0.4
+这个一个用纯JS编写的页面滚动的小demo，当前版本0.5
 
 
 ## 使用说明
@@ -35,16 +35,23 @@
 
 ``` html
 
-<a id='title' class='font_warp' font-pattern=2 font-direction='vertical'>
-	 <h2  class='font'>DEMO展示</h2>
-</a>
-
+<div class='warp'>
+	<a id='title' class='font_warp' font-pattern=2 font-direction='vertical' pri=1>
+		 <h2  class='font'>DEMO展示</h2>
+	</a>
+</div>
 ```
 
-您只需要向上面这样，为某个包裹文本的标签添加 font 样式，并将它包裹在 a 标签中(当然其他类似的也行)然后为这个标签添加样式:font_warp，并设置属性font-pattern和font-direction。
+您只需要向上面这样，为某个包裹文本的标签添加 font 样式，并将它包裹在 a 标签中(当然其他类似的也行)然后为这个标签添加样式:font_warp，并设置属性font-pattern和font-direction,并在最顶层添加一个class为'warp'的div(其他类似的标签也行)。
 
+动画字体的属性
 - font-pattern  数字，1-普通字体效果，2-淡入淡出
 - font-direction 字符串，vertical-垂直方向,horizontal-水平方向
+- pri 数字，当前页面字体动画播放的优先级。
+
+动画字体的排版
+
+您只需要对外层含有class为'warp'的div设置样式即可。
 
 ## 更新历史
 0.1
@@ -64,3 +71,9 @@
 0.4
 
 - 增加了几种简单的字体效果
+
+
+0.5
+
+- 修复动画字体排版问题
+- 增加动画字体播放动画效果的优先级属性pri

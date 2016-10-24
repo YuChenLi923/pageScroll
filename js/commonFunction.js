@@ -105,11 +105,10 @@ function twoDimArray(len){
 function UnitBezier(p1x,p1y,p2x,p2y) {
 		this.cx = 3.0 * p1x;
 		this.bx = 3.0 * (p2x - p1x) - this.cx;
-		this.ax = 1.0 - this.cx -this.bx;
-		 
+		this.ax = 1.0 - this.cx -this.bx;	 
 		this.cy = 3.0 * p1y;
 		this.by = 3.0 * (p2y - p1y) - this.cy;
-		this.ay = 1.0 - this.cy - this.by;//之后再研究
+		this.ay = 1.0 - this.cy - this.by;
 }
 UnitBezier.prototype = {
 	epsilon : 1e-2,     // 默认精度
@@ -140,7 +139,6 @@ UnitBezier.prototype = {
 			    t2 = t2 - x2 / d2;
 			}
 
-			// No solution found - use bi-section
 			t0 = 0.0;
 			t1 = 1.0;
 			t2 = x;
@@ -158,7 +156,6 @@ UnitBezier.prototype = {
 				t2 = (t1 - t0) * .5 + t0;
 			}
 
-			// Give up
 			return t2;
 	},
 	solve : function(x, epsilon) {
