@@ -133,7 +133,7 @@
 					pri:curElem.getAttribute('pri')
 				};
 				fontAnimateObj.font.parentNode.parentNode.style.width=fontAnimateObj.fontwidth+'px';
-					fontAnimateObj.font.style.width=fontAnimateObj.fontwidth+'px';
+				fontAnimateObj.font.style.width=fontAnimateObj.fontwidth+'px';
 				fontAnimateObj.dis=fontAnimateObj.fontDirection=='width'?fontAnimateObj.fontwidth:fontAnimateObj.fontheight;
 				fontAnimateObj.patternString=fontPattern[parseInt(pattern)-1](fontAnimateObj.fontDirection,fontAnimateObj.dis);
 				curElem.style[fontAnimateObj.fontDirection]=0;
@@ -145,44 +145,41 @@
 				stack.push(fontAnimateObj);
 			}
 		}
-		stack.sort(function(){
-			if(arguments[0].pri>arguments[1].pri){
-				return -1;
-			}
-			if(arguments[0].pri==arguments[1].pri){
-				return 0;
-			}
-			else{
-				return 1;
-			}
-		});
-		setTimeout(function(){
-			timer=setInterval(function(){
-				var args=[],
-					Time=10;
-				while(1){
-					if(args.length>0){
-						if(stack.length>0&&args[args.length-1].pri===stack[0].pri){
-							args.push(stack.shift());
-						}
-						else if(stack.length>0){
-							break;
-						}
-						else if(stack.length===0){
-							clearInterval(timer);
-							break;
-						}
-					}
-					else{
-						args.push(stack.shift());
-					}
+		if(stack.length>0){
+			stack.sort(function(){
+				if(arguments[0].pri>arguments[1].pri){
+					return -1;
 				}
-				for(var i=0,len=args.length;i<len;i++){
-					args[i].animate.start(args[i].patternString,800,'linear');
+				if(arguments[0].pri==arguments[1].pri){
+					return 0;
 				}
-				args.length=0;
-			},800);
-		},time-800>0?time-800:0);
+				else{
+					return 1;
+				}
+			});
+			setTimeout(function(){
+				timer=setInterval(function(){
+					var args=[],
+						Time=10;
+					while(1){
+							if(args.length==0||(stack.length>0&&args[args.length-1].pri===stack[0].pri)){
+								args.push(stack.shift());
+							}
+							else if(stack.length>0){
+								break;
+							}
+							else if(stack.length===0){
+								clearInterval(timer);
+								break;
+							}
+					}
+					for(var i=0,len=args.length;i<len;i++){
+						args[i].animate.start(args[i].patternString,800,'linear');
+					}
+					args.length=0;
+				},800);
+			},time-800>0?time-800:0);
+		}
 	}
 	//字体模式
 	var fontPattern=[
@@ -228,13 +225,7 @@
 				toIndex=target.getAttribute('data-index');
 			if(toIndex){
 				if(animation){
-					if(toIndex-index>0){
-						scrollAnimation(height*(toIndex-index),1);
-					}
-					else if(toIndex-index<0){
-						scrollAnimation(height*(index-toIndex),-1);
-					}
-					index=toIndex;
+						scroll(toIndex-index);
 				}
 			}
 		});
