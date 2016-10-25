@@ -164,26 +164,29 @@ UnitBezier.prototype = {
 }
 
 
-//动画函数 0.1
-var speedPattern={
-	ease:function(curTime,startValue,endValue,duration){
-		var Bezier=new UnitBezier(0.25,0.1,0.25,1);
-		return  Bezier.solve(curTime/duration,UnitBezier.prototype.epsilon)*(endValue-startValue)+startValue;
-	},
-	linear:function(curTime,startValue,endValue,duration){
-		var Bezier=new UnitBezier(0,0,1,1);
-		return  Bezier.solve(curTime/duration,UnitBezier.prototype.epsilon)*(endValue-startValue)+startValue;
-	},
-	easeIn:function(curTime,startValue,endValue,duration){
-		var Bezier=new UnitBezier(0.42,0,1,1);
-		return  Bezier.solve(curTime/duration,UnitBezier.prototype.epsilon)*(endValue-startValue)+startValue;
-	},
-	easeOut:function(curTime,startValue,endValue,duration){
-		var Bezier=new UnitBezier(0, 0, 0.58, 1);
-		return  Bezier.solve(curTime/duration,UnitBezier.prototype.epsilon)*(endValue-startValue)+startValue;
-	},
-	easeInOut:function(curTime,startValue,endValue,duration){
-		var Bezier=new UnitBezier(0.42, 0, 0.58, 1);
+//动画函数 0.2
+var defaultPattern={
+		ease:new UnitBezier(0.25,0.1,0.25,1),
+		linear:new UnitBezier(0,0,1,1),
+		easeIn:new UnitBezier(0.42,0,1,1),
+		easeOut:new UnitBezier(0, 0, 0.58, 1),
+		easeInOut:new UnitBezier(0.42, 0, 0.58, 1)
+	}
+var speedPattern=function(){
+	if(arguments.length===1&&typeof(arguments[0])==='string'){
+		var Bezier=defaultPattern[arguments[0]];
+		
+	}
+	else if(arguments[0].length===4){
+		var Bezier=new UnitBezier(arguments[0][0],arguments[0][1],arguments[0][2],arguments[0][3]);
+		for(var i=0;i<4;i++){
+			if(typeof(arguments[0][i])!='number'||arguments[0][i]<0||arguments[0][i]>1){
+				var Bezier=defaultPattern['linear'];
+			}
+		}
+	}
+	return function(curTime,startValue,endValue,duration){
+		
 		return  Bezier.solve(curTime/duration,UnitBezier.prototype.epsilon)*(endValue-startValue)+startValue;
 	}
 }
@@ -205,7 +208,7 @@ animate.prototype.init=function(dom){
 animate.prototype.start=function(rules,duration,easing){
 	this.startTime=+new Date;
 	this.duration=duration;
-	this.easing=speedPattern[easing];
+	this.easing=speedPattern(easing);
 	var self=this;
 	for(var i=0,len=rules.length;i<len;i++){
 		(function(t){
