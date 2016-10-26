@@ -329,7 +329,7 @@ function PageScroll(data){
 			var e=e||window.event,
 				target=e.target||e.srcElement,
 				toIndex=target.getAttribute('data-index');
-			if(toIndex){
+			if(toIndex!=index){
 				if(animation){
 						scroll(toIndex-index);
 				}
