@@ -214,8 +214,8 @@ animate.prototype.start=function(rules,duration,easing){
 		(function(t){
 			var rule=rules[t].split(':');
 			self.propertyName[t]=rule[0];
-			if(self.unit[t]=rule[1].match(/[a-zA-Z]{1,}/)){
-				self.unit[t]=rule[1].match(/[a-zA-Z]{1,}/)[0];
+			if(self.unit[t]=rule[1].match(/[a-zA-Z%]{1,}/)){
+				self.unit[t]=rule[1].match(/[a-zA-Z%]{1,}/)[0];
 			}
 			else{
 				self.unit[t]='';

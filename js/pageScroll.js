@@ -1,4 +1,4 @@
-(function PageScroll(data){
+function PageScroll(data){
 	var doc=document,
 		id=data.id,
 		num=data.num,
@@ -79,7 +79,54 @@
 				scroll(flag);
 		}
 	}
+	//页面切换模式
+	var pagePattern=[
+		function(gap,nextPStyle){
+			for(var i=0,dir;dir=direction[i];i++){
+				if(dir==='top')
+					nextPStyle[dir]=(gap>0?height:-height)+'px';
+				else{
+					nextPStyle[dir]=(gap>0?width:-width)+'px';
+				}
+			}
+			return [
+				'opacity:1',
+				'top:0px',
+				'left:0px'
+			];
+		},
+		function(gap,nextPStyle){
+			nextPStyle['width']=0;
+			nextPStyle['height']=0;
+			nextPStyle['left']='50%';
+			nextPStyle['top']='50%';
+			return [
+				'opacity:1',
+				'width:'+width+'px',
+				'height:'+height+'px',
+				'top:0%',
+				'left:0%'
+			];
+		},
+		function(gap,nextPStyle){
+			if(gap>0){
 
+			}
+			else if(gap<0){
+				nextPStyle['top']='100%';
+			}	
+			nextPStyle['width']=0;
+			nextPStyle['height']=0;
+			nextPStyle['left']='50%';
+			return [
+				'opacity:1',
+				'width:'+width+'px',
+				'height:'+height+'px',
+				'left:0%',
+				'top:0%'
+			];
+		}
+	];
 	//页面滚动效果
 	function pageScrollAnimation(from,to){
 		animation=false;
@@ -87,13 +134,6 @@
 			curP=page[from-1],
 			nextP=page[to-1],
 			nextPStyle=nextP.style;
-		for(var i=0,dir;dir=direction[i];i++){
-			if(dir==='top')
-				nextPStyle[dir]=(gap>0?height:-height)+'px';
-			else{
-				nextPStyle[dir]=(gap>0?width:-width)+'px';
-			}
-		}
 		var nextPClass=handleStyleTable(nextP);
 		var curPClass=handleStyleTable(curP);
 		nextPClass.add('slide');
@@ -107,13 +147,10 @@
 			curNav(num,index);
 			nextPClass=curPClass=null;
 		});	
-		pageAnimate.start([
-			'opacity:1',
-			'top:0px',
-			'left:0px'
-		],time,easing);
+		pageAnimate.pattern=pagePattern[style-1](gap,nextPStyle);
+		pageAnimate.start(pageAnimate.pattern,time,easing);
 	}  
-		//字体模式
+	//字体模式
 	var fontPattern=[
 		//1-普通模式
 		function(font,curElem){
@@ -122,6 +159,9 @@
 			font.font.style.width=font.width+'px';
 			font.font.parentNode.style[font.direction]=0;
 			font.animate.init(curElem);	
+			font.animate.callback(function(args){
+				this.dom.style.width=args[0]+'px';
+			},font.width);
 			return [font.direction+':'+font.dis+'px'];
 		},
 		//2-淡入淡出模式
@@ -131,6 +171,9 @@
 			font.font.style.width=font.width+'px';
 			font.font.parentNode.style.opacity=0;
 			font.animate.init(curElem);
+			font.animate.callback(function(args){
+				this.dom.style.width=args[0]+'px';
+			},font.width);
 			return [
 				'opacity:1'
 			]
@@ -143,36 +186,62 @@
 			font.font.parentNode.style[font.direction]=0;
 			font.font.parentNode.style.opacity=0;
 			font.animate.init(curElem);
+			font.animate.callback(function(args){
+					this.dom.style.width=args[0]+'px';
+			},font.width);
 			return [
 				font.direction+':'+font.dis+'px',
 				'opacity:1'
 			]
 		},
 		//4-整体滑动模式
-			function(font,curElem){
+		function(font,curElem){
 			font.curElem.style.cssText='display:block';
-			// font.warp.style.cssText='opacity:0';
 			font.warp.style.width=font.width+'px';
 			font.font.style.width=font.width+'px';
-			font.warp.style.marginTop='20px';
+			font.warp.style.marginTop=parseInt(font.warp.offsetTop)-100+'px';
 			font.animate.init(font.warp);
+			font.animate.callback(function(args){
+					this.dom.style.width=args[0]+'px';
+				},font.width);
 			return [
-				'marginTop:100px',
+				'marginTop:'+ (100+parseInt(font.warp.style.marginTop)) +'px',
+				'opacity:1'
+			]
+		},
+		//5-滑动回荡模式
+		function(font,curElem){
+			font.curElem.style.cssText='display:block';
+			font.warp.style.width=font.width+'px';
+			font.font.style.width=font.width+'px';
+			font.warp.style.marginTop=parseInt(font.warp.offsetTop)-100+'px';
+			font.animate.init(font.warp);
+			font.animate.callback(function(args){
+					this.dom.style.width=args[0]+'px';
+					font.animate.start(
+						[
+							'marginTop:'+ (parseInt(font.warp.style.marginTop)-40) +'px'	
+						]
+					,font.time,font.timePattern);
+					font.animate.callback(null);
+				},font.width);
+			return [
+				'marginTop:'+ (140+parseInt(font.warp.style.marginTop)) +'px',
 				'opacity:1'
 			]
 		}
 	];
 	function fontObj(pattern,curElem){
 		this.curElem=curElem;
-		this.pattern=parseInt(curElem.getAttribute('font-pattern'));
-		this.time=parseInt(curElem.getAttribute('font-time'));
-		this.timePattern=curElem.getAttribute('font-timePattern');
-		this.direction=fontDir[curElem.getAttribute('font-direction')];
+		this.pattern=parseInt(curElem.getAttribute('font-pattern')||0);;
+		this.time=parseInt(curElem.getAttribute('font-time'))||800;
+		this.timePattern=curElem.getAttribute('font-timePattern')||'linear';
+		this.direction=fontDir[curElem.getAttribute('font-direction')||'horizontal'];
 		this.font=curElem.children[0];
 		this.width=this.font.offsetWidth+5;
 		this.height=this.font.offsetHeight;
 		this.animate=new animate();
-		this.pri=parseInt(curElem.getAttribute('pri'));
+		this.pri=parseInt(curElem.getAttribute('pri')||0);
 		this.warp=curElem.parentNode;
 		this.dis=this.direction=='width'?this.width:this.height;
 		this.patternString=null;
@@ -191,10 +260,6 @@
 				var curElem=elems[i],
 					fontAnimateObj=new fontObj(pattern,curElem);
 				fontAnimateObj.curElem.style.cssText='display:none';
-				fontAnimateObj.animate.callback(function(args){
-					this.dom.style.cssText='display:block;opacity:1';
-					this.dom.style.width=args[0]+'px';
-				},fontAnimateObj.width);
 				stack.push(fontAnimateObj);
 			}
 		}
@@ -228,7 +293,7 @@
 							}
 					}
 					for(var i=0,len=args.length;i<len;i++){
-						args[i].patternString=fontPattern[args[i].pattern-1](args[i],args[i].curElem)
+						args[i].patternString=fontPattern[(args[i].pattern-1)||0](args[i],args[i].curElem)
 						args[i].animate.start(args[i].patternString,args[i].time,args[i].timePattern);
 					}
 					args.length=0;
@@ -290,7 +355,6 @@
 				keyEvent(e);
 			});
 		}
-
 	}
 	//添加控制器
 	function addControl(control){
@@ -310,18 +374,4 @@
 		init(index);
 		addControl(control);
 	})();
-})(
-	{
-		id:'warp',//页面的外层包裹
-		num:5,//页面数量
-		direction:['left','top'],//页面跳转的方向 top-垂直，left -水平
-		time:800,//页面跳转的时间，单位为ms
-		easing:'linear',//页面跳转动画的速度曲线 ,可选择 字符串-'linear'、'ease'、'easeIn'、'easeOut'、'easeInOut'
-													  // 数组-必须为4个数字,前两个数字代表贝塞尔曲线的P1点，后两个数字代表P2点。例如:0.42,0.12,0.23,0.18
-		style:'normal',//页面跳转的风格 
-		nav:true,//是否开启导航栏
-		loop:true,//是否开启循环页面
-		start:2,//初始页面的位置
-		control:['mousewheel','keyboard']//'mousewheel-鼠标滚轮,keyboard-键盘方向键
-	}
-);
+}
