@@ -66,14 +66,12 @@ body{
 	font-size:35px;
 }
 #page3{
-	background-color:#041316;
+	background-color:red;
 }
 #page4{
 	background-color:#8E21C9;
 }
-#page5{
-	background-color:#041316;
-}
+
 
 #nav{
 	position:fixed;

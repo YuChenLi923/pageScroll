@@ -24,17 +24,15 @@
 
 - num 数字,页面的数量
 
-- direction 数组,页面跳转动画的方向，示例['left'],目前可添加的参数:left-水平方向,top-垂直方向,也可以组合使用，如：['left','top']。在style为2,3的时候该属性暂时无效。
+- direction 数组,页面跳转动画的方向，示例['left'],目前可添加的参数:left-水平方向,top-垂直方向,也可以组合使用，如：['left','top']。在style为2的时候该属性无效。
 
 - style 字符串,页面跳转动画的风格,1-普通模式，2-中间冒出，3-两边冒出
-
-- nav 布尔值,是否开启导航栏
 
 - loop 布尔值,是否开启循环
 
 - start 数字,初始页面的位置,从1开始
 
-- control 数组，数组中元素可选:'mousewheel'(鼠标滚轮),'keyboard'(键盘)
+- control 数组，数组中元素可选:'mousewheel'(鼠标滚轮),'keyboard'(键盘),'nav'(导航栏)
 
 - easing 页面跳转动画的速度曲线 ,可选择 
 	字符串-'linear'、'ease'、'easeIn'、'easeOut'、'easeInOut'
@@ -110,3 +108,8 @@
 - 增加了字体动画的默认值，防止出现报错
 - 增加了2种页面跳转的模式
 - 修复font-pattern=4时重复字体动画导致的位置叠加问题
+
+0.8
+
+- 修复加载时期字体动画产生的bug
+- 删除了nav接口，要添加nav(导航栏)只要control属性的数组中添加'nav'即可

@@ -1,3 +1,5 @@
+//pageScroll.js 0.8 by chen on 2016-11-1
+//github:https://github.com/liyc1996/pageScroll
 function PageScroll(data){
 	var doc=document,
 		id=data.id,
@@ -5,7 +7,6 @@ function PageScroll(data){
 		direction=data.direction,
 		time=data.time,
 		style=data.style,
-		nav=data.nav,
 		index=data.start,
 		animation=true,
 		ul=null,
@@ -27,7 +28,6 @@ function PageScroll(data){
 	function init(start){
 		var cur=page[start-1],
 			curPClass=handleStyleTable(cur);
-		curNav(num,start);
 		curPClass.add('cur');
 		curPClass=null;
 		fontAnimation(cur);
@@ -109,15 +109,30 @@ function PageScroll(data){
 			];
 		},
 		function(gap,nextPStyle){
-			if(gap>0){
-
+			var dir=direction;
+			if(dir.length==1){
+				if(dir[0]=='top'){
+					nextPStyle['left']='50%';
+					if(gap<0){
+						nextPStyle['top']='100%';
+					}	
+				}
+				if(dir[0]=='left'){
+					nextPStyle['top']='50%';
+					if(gap<0){
+						nextPStyle['left']='100%';
+					}		
+				}
 			}
-			else if(gap<0){
-				nextPStyle['top']='100%';
+			else{
+				nextPStyle['top']='50%';
+				 if(gap<0){
+					nextPStyle['top']='100%';
+				}	
 			}	
 			nextPStyle['width']=0;
 			nextPStyle['height']=0;
-			nextPStyle['left']='50%';
+			
 			return [
 				'opacity:1',
 				'width:'+width+'px',
@@ -133,9 +148,9 @@ function PageScroll(data){
 		var gap=to-from,
 			curP=page[from-1],
 			nextP=page[to-1],
-			nextPStyle=nextP.style;
-		var nextPClass=handleStyleTable(nextP);
-		var curPClass=handleStyleTable(curP);
+			nextPStyle=nextP.style,
+		 	nextPClass=handleStyleTable(nextP),
+		 	curPClass=handleStyleTable(curP);
 		nextPClass.add('slide');
 		pageAnimate.init(nextP);
 		fontAnimation(nextP);
@@ -354,6 +369,10 @@ function PageScroll(data){
 			addEvent(doc,'keydown',function(e){
 				keyEvent(e);
 			});
+		},
+		nav:function(){
+			createNav(num);
+			curNav(num,start);
 		}
 	}
 	//添加控制器
@@ -366,12 +385,10 @@ function PageScroll(data){
 			width=getPageSizeInf().docWidth;
 		});
 	}
-
 	return (function(){
-		if(nav){
-			createNav(num);
-		}
 		init(index);
-		addControl(control);
+		setTimeout(function(){
+			addControl(control);
+		},time)
 	})();
 }

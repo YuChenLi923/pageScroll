@@ -62,15 +62,14 @@
 					{
 						id:'warp',//页面的外层包裹
 						num:4,//页面数量
-						direction:['left','top'],//页面跳转的方向 top-垂直，left -水平
+						direction:['top'],//页面跳转的方向 top-垂直，left -水平
 						time:800,//页面跳转的时间，单位为ms
 						easing:'linear',//页面跳转动画的速度曲线 ,可选择 字符串-'linear'、'ease'、'easeIn'、'easeOut'、'easeInOut'
-					 											// 数组-必须为4个数字,前两个数字代表贝塞尔曲线的P1点，后两个数字代表P2点。例如:0.42,0.12,0.23,0.18
-						style:3,//页面跳转的风格 ,1-普通模式，2-中间冒出，3-两边冒出
-						nav:true,//是否开启导航栏
+																	  // 数组-必须为4个数字,前两个数字代表贝塞尔曲线的P1点，后两个数字代表P2点。例如:0.42,0.12,0.23,0.18
+						style:3,//页面跳转的风格 ,1-普通模式
 						loop:true,//是否开启循环页面
 						start:2,//初始页面的位置
-						control:['mousewheel','keyboard']//'mousewheel-鼠标滚轮,keyboard-键盘方向键
+						control:['mousewheel','keyboard','nav']//'mousewheel-鼠标滚轮,keyboard-键盘方向键,nav-导航栏
 					}
 			);
 		}
