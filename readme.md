@@ -73,16 +73,15 @@ window.onload=function(){
 ### pageScroll(object)接口的参数说明：
 
 - option
-
-	- id 字符串 页面外层包裹,如果是示例则为'warp'
-	- num 数字,页面的数量
+	- id 字符串 页面外层包裹,如果是示例则为'warp'。
+	- num 数字,页面的数量。
 	- direction 数组,页面跳转动画的方向，示例['left'],目前可添加的参数:left-水平方向,top-垂直方向,也可以组合使用，如：['left','top']。在style为2的时候该属性无效。
 	- style 字符串,所有页面跳转动画的风格,1-普通模式，2-中间冒出，3-两边冒出
 数组,指定页面的跳转风格。例如:[1,2,3],那么第一个页面是风格1，第二个页面是风格2，第三页面是风格3
-	- loop 布尔值,是否开启循环
-	- start 数字,初始页面的位置,从1开始
-	- control 数组，数组中元素可选:'mousewheel'(鼠标滚轮),'keyboard'(键盘),'nav'(导航栏)
-	- easing 页面跳转动画的速度曲线 ,可选择:字符串-'linear'、'ease'、'easeIn'、'easeOut'、'easeInOut',数组-必须为4个数字,前两个数字代表贝塞尔曲线的P1点，后两个数字代表P2点。例如:0.42,0.12,0.23,0.18
+	- loop 布尔值,是否开启循环。
+	- start 数字,初始页面的位置,从1开始。
+	- control 数组，数组中元素可选:'mousewheel'(鼠标滚轮),'keyboard'(键盘),'nav'(导航栏)。
+	- easing 页面跳转动画的速度曲线 ,可选择:字符串-'linear'、'ease'、'easeIn'、'easeOut'、'easeInOut',数组-必须为4个数字,前两个数字代表贝塞尔曲线的P1点，后两个数字代表P2点。例如:0.42,0.12,0.23,0.18。
 
 ###　字体动画效果的添加
 
@@ -103,33 +102,21 @@ window.onload=function(){
 
 自定义的动画字体属性需要在上述例子的<a>标签中添加，否则无效，目前的自定义属性有：
 
-- font-pattern(必须)  
+- font-pattern(必须)  数字，1-滑动出现，2-淡入，3-淡入滑动，4-字体整体滑动
 
-数字，1-滑动出现，2-淡入，3-淡入滑动，4-字体整体滑动
+- font-direction(可选) 字符串，vertical-垂直方向,horizontal(默认)-水平方向
 
-- font-direction(可选) 
+- font-time(可选) 数字，字体动画播放的时间，单位ms，默认800ms
 
-字符串，vertical-垂直方向,horizontal(默认)-水平方向
-
-- font-time(可选) 
-
-数字，字体动画播放的时间，单位ms，默认800ms
-
-- font-timePattern(可选) 
-
-字体动画的速度曲线 ,可选择 
-
-字符串-'linear'(默认)、'ease'、'easeIn'、'easeOut'、'easeInOut'
-
-数组-必须为4个数字,前两个数字代表贝塞尔曲线的P1点，后两个数字代表P2点。例如:0.42,0.12,0.23,0.18
+- font-timePattern(可选) 字体动画的速度曲线 ,可选择 字符串-'linear'(默认)、'ease'、'easeIn'、'easeOut'、'easeInOut';数组-必须为4个数字,前两个数字代表贝塞尔曲线的P1点，后两个数字代表P2点。例如:0.42,0.12,0.23,0.18
  	
 - pri 数字，当前页面字体动画播放的优先级，默认为0
 
-动画字体的排版
+
+#### 动画字体的排版
 
 您只需要对外层含有class为'warp'的div设置样式即可。
 
 ## 兼容性
 
 支持Firefox、Chromn、opera、IE 6+
-
