@@ -1,8 +1,7 @@
-//pageScroll.js 0.8 by chen on 2016-11-1
+//pageScroll.js 0.5.2 by chen on 2017-4-11
 //github:https://github.com/liyc1996/pageScroll
 function PageScroll(data){
 	var doc=document,
-		id=data.id,
 		num=data.num,
 		direction=data.direction,
 		time=data.time,
@@ -16,13 +15,10 @@ function PageScroll(data){
 		time=data.time,
 		easing=data.easing,
 		warp=doc.getElementById('warp'),
-		pages=warp.firstElementChild||doc.getElementById('warp').childNodes[1],
 		height=getPageSizeInf().docHeight,
 		width=getPageSizeInf().docWidth,
-		speed=height/(100*time),
-		page=getElement(pages,'.page',false),
+		page=getElementByClass('page'),
 		fontDir={'horizontal':'width','vertical':'height'},
-		cssText=twoDimArray(num),
 		pageAnimate=new animate();
 	//页面初始化
 	function init(start){
@@ -85,7 +81,7 @@ function PageScroll(data){
 			for(var i=0,dir;dir=direction[i];i++){
 				if(dir==='top')
 					nextPStyle[dir]=(gap>0?height:-height)+'px';
-				else{
+				else if(dir === 'left'){
 					nextPStyle[dir]=(gap>0?width:-width)+'px';
 				}
 			}
@@ -161,8 +157,14 @@ function PageScroll(data){
 			animation=true;
 			curNav(num,index);
 			nextPClass=curPClass=null;
-		});	
-		pageAnimate.pattern=pagePattern[style-1](gap,nextPStyle);
+		});
+		if(Object.prototype.toString.call(style) == '[object Array]'){
+			console.log(style[to-1]);
+            pageAnimate.pattern=pagePattern[style[to-1]-1](gap,nextPStyle);
+		}else{
+			console.log(Object.prototype.toString(style));
+            pageAnimate.pattern=pagePattern[style-1](gap,nextPStyle);
+		}
 		pageAnimate.start(pageAnimate.pattern,time,easing);
 	}  
 	//字体模式
@@ -248,7 +250,7 @@ function PageScroll(data){
 	];
 	function fontObj(pattern,curElem){
 		this.curElem=curElem;
-		this.pattern=parseInt(curElem.getAttribute('font-pattern')||0);;
+		this.pattern=parseInt(curElem.getAttribute('font-pattern')||0);
 		this.time=parseInt(curElem.getAttribute('font-time'))||800;
 		this.timePattern=curElem.getAttribute('font-timePattern')||'linear';
 		this.direction=fontDir[curElem.getAttribute('font-direction')||'horizontal'];

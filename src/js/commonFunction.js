@@ -49,49 +49,16 @@ function getPageSizeInf(){
 }
 
 
-//最大程度优化元素获取
-function getElement(obj,select,dynamic){
-	var  doc=document,
-		elem=null,
-		flag=select.charAt(0);
-	if(flag==='#'){
-		if(doc.querySelector&&dynamic==false){
-			elem=obj.querySelector(select);
-		}
-		else{
-			elem=obj.getElementById(select.slice(1));
-		}
-	}
-	if(flag==='.'){
-		if(doc.querySelectorAll&&dynamic==false){
-			elem=obj.querySelectorAll(select);
-		}
-		else{
-			if(doc.getElementsByClassName){
-				elem=obj.getElementsByClassName(select.slice(1));
-			}
-			else{
-				var AllElem=doc.getElementsByTagName('*'),
-					result=[];
-
-				for(var i=0,max=AllElem.length;i<max;i++){
-					if(AllElem[i].className==select.slice(1)){
-						result.push(AllElem[i]);
-					}
-				}
-				elem=result;
-			}
-		}
-	}
-	if(flag!='.'&&select.charAt(0)!='#'){
-		if(doc.querySelectorAll&&dynamic==false){
-			elem=obj.querySelectorAll(select);
-		}
-		else{
-			elem=obj.getElementsByTagName(select);
-		}
-	}
-	return elem;
+function getElementByClass(Class){
+    var AllElem=document.getElementsByTagName('*'),
+        result=[];
+    for(var i=0,max=AllElem.length;i<max;i++){
+        if(AllElem[i].className == Class){
+            result.push(AllElem[i]);
+        }
+    }
+    elem=result;
+    return elem;
 }
 //创建二维空数组
 function twoDimArray(len){
