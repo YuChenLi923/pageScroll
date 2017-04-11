@@ -1,4 +1,4 @@
-## pageScroll
+## PageScroll
 
 这是一个基于JS编写的轻量级的用于生成简单的页面滚动展示效果的库，当前版本0.5.2
 
@@ -120,4 +120,4 @@ window.onload=function(){
 
 ## 兼容性
 
-支持Firefox、Chromn、opera、IE 6+
+支持Firefox、Chrome、opera、IE 6+
